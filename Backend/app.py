@@ -4,10 +4,14 @@ from flask_cors import CORS
 from PIL import Image
 import pytesseract
 
-pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
-
 app = Flask(__name__)
 CORS(app)
+
+@app.route("/")
+def home():
+    return "Backend is running successfully!"
+
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 @app.route('/extract-text', methods=['POST'])
 def extract_text():
@@ -29,8 +33,6 @@ def extract_text():
 
         extracted_text = pytesseract.image_to_string(image)
 
-        print(extracted_text)
-
         date_match = re.search(r'\d{2}/\d{2}/\d{4}', extracted_text)
 
         quantity_match = re.search(r'Quantity:\s*(\d+)', extracted_text)
@@ -44,8 +46,6 @@ def extract_text():
         return jsonify(structured_data)
 
     except Exception as e:
-
-        print("ERROR:", str(e))
 
         return jsonify({
             "error": str(e)
