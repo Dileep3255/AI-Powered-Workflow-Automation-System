@@ -18,18 +18,23 @@ const [loading, setLoading] = useState(false);
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch("http://127.0.0.1:5000/extract-text", {
-      method: "POST",
-      body: formData,
-    });
+    const response = await fetch("http://localhost:5000/extract-text", {
+        method: "POST",
+        body: formData,
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    setText(data);
+      if (!response.ok) {
+        alert(data.error);
+        return;
+      }
+
+      setText(data);
 
   } catch (error) {
 
-    alert("Error extracting text");
+    alert(error.message);
 
   } finally {
 
@@ -48,6 +53,7 @@ const [loading, setLoading] = useState(false);
 
         <input
           type="file"
+          accept="image/*"
           onChange={(e) => setFile(e.target.files[0])}
         />
 

@@ -14,9 +14,18 @@ def extract_text():
 
     try:
 
+        if 'file' not in request.files:
+            return jsonify({"error": "No file uploaded"}), 400
+
         file = request.files['file']
 
-        image = Image.open(file.stream)
+        if file.filename == '':
+            return jsonify({"error": "No selected file"}), 400
+
+        try:
+            image = Image.open(file.stream)
+        except Exception:
+            return jsonify({"error": "Invalid image file"}), 400
 
         extracted_text = pytesseract.image_to_string(image)
 
