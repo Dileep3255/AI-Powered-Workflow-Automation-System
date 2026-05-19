@@ -11,7 +11,7 @@ CORS(app)
 def home():
     return "Backend is running successfully!"
 
-#pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
 
 @app.route('/extract-text', methods=['POST'])
 def extract_text():
